@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ssm.test.dao.EmployeeMapper" >
+  <resultMap id="BaseResultMap" type="com.ssm.test.pojo.Employee" >
+    <id column="EmployeeId" property="employeeid" jdbcType="VARCHAR" />
+    <result column="EmployeeName" property="employeename" jdbcType="VARCHAR" />
+    <result column="EmployeeOld" property="employeeold" jdbcType="INTEGER" />
+    <result column="EmployeeSex" property="employeesex" jdbcType="VARCHAR" />
+    <result column="EmployeeAddress" property="employeeaddress" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    EmployeeId, EmployeeName, EmployeeOld, EmployeeSex, EmployeeAddress
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from employee
+    where EmployeeId = #{employeeid,jdbcType=VARCHAR}
+  </select>
+  <!-- 查询员工列表 -->
+  <select id="selectEmployee" resultMap="BaseResultMap" parameterType="com.ssm.test.pojo.Employee" >
+  	select 
+  	<include refid="Base_Column_List" />
+    from employee
+    <where>
+    <if test="employeename!=null and employeename!=''">
+    and employeename like"%"#{employeename}"%"
+    </if>
+    </where>
+  </select>
+  <!-- 删除 -->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from employee
+    where EmployeeId = #{employeeid,jdbcType=VARCHAR}
+  </delete>
+  <!-- 增加 -->
+  <insert id="insert" parameterType="com.ssm.test.pojo.Employee" >
+    insert into employee (EmployeeId, EmployeeName, EmployeeOld, 
+      EmployeeSex, EmployeeAddress)
+    values (#{employeeid,jdbcType=VARCHAR}, #{employeename,jdbcType=VARCHAR}, #{employeeold,jdbcType=INTEGER}, 
+      #{employeesex,jdbcType=VARCHAR}, #{employeeaddress,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ssm.test.pojo.Employee" >
+    insert into employee
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="employeeid != null" >
+        EmployeeId,
+      </if>
+      <if test="employeename != null" >
+        EmployeeName,
+      </if>
+      <if test="employeeold != null" >
+        EmployeeOld,
+      </if>
+      <if test="employeesex != null" >
+        EmployeeSex,
+      </if>
+      <if test="employeeaddress != null" >
+        EmployeeAddress,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="employeeid != null" >
+        #{employeeid,jdbcType=VARCHAR},
+      </if>
+      <if test="employeename != null" >
+        #{employeename,jdbcType=VARCHAR},
+      </if>
+      <if test="employeeold != null" >
+        #{employeeold,jdbcType=INTEGER},
+      </if>
+      <if test="employeesex != null" >
+        #{employeesex,jdbcType=VARCHAR},
+      </if>
+      <if test="employeeaddress != null" >
+        #{employeeaddress,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <!-- 修改 -->
+  <update id="updateByEmployeeId" parameterType="com.ssm.test.pojo.Employee" >
+    update employee
+    <set >
+      <if test="employeename != null" >
+        EmployeeName = #{employeename,jdbcType=VARCHAR},
+      </if>
+      <if test="employeeold != null" >
+        EmployeeOld = #{employeeold,jdbcType=INTEGER},
+      </if>
+      <if test="employeesex != null" >
+        EmployeeSex = #{employeesex,jdbcType=VARCHAR},
+      </if>
+      <if test="employeeaddress != null" >
+        EmployeeAddress = #{employeeaddress,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where EmployeeId = #{employeeid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ssm.test.pojo.Employee" >
+    update employee
+    set EmployeeName = #{employeename,jdbcType=VARCHAR},
+      EmployeeOld = #{employeeold,jdbcType=INTEGER},
+      EmployeeSex = #{employeesex,jdbcType=VARCHAR},
+      EmployeeAddress = #{employeeaddress,jdbcType=VARCHAR}
+    where EmployeeId = #{employeeid,jdbcType=VARCHAR}
+  </update>
+</mapper>

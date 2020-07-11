@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ssm.test.dao.UserMapper" >
+  <sql id="Base_Column_List" >
+    PhoneNumber,SmsNumber
+  </sql>
+  <!-- 查询用户列表 -->
+  <select id="selectBypn" resultMap="BaseResultMap" parameterType="com.ssm.test.pojo.User" >
+  	select 
+  	<include refid="Base_Column_List" />
+    from user
+    <where>
+    <if test="phonenumber!=null and phonenumber!=''">
+    and phonenumber = #{phonenumber,jdbcType=INTEGER}
+    </if>
+    </where>
+  </select>
+  <!-- 增加 -->
+  <insert id="insert" parameterType="com.ssm.test.pojo.User" >
+    insert into USER (PhoneNumber, SmsNumber)
+    values (#{PhoneNumber,jdbcType=INTEGER}, #{SmsNumber,jdbcType=INTEGER})
+  </insert>
+</mapper>

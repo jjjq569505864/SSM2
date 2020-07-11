@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+	<!-- 扫描类 -->
+	<context:component-scan base-package="com.ssm.test"></context:component-scan>	
+	<!-- 开启springmvc注解模式 -->	
+	<mvc:annotation-driven></mvc:annotation-driven>
+	<!-- 过滤静态资源。如果使用注解方式配置了requestmapping，则必须开启springmvc的注解模式 -->
+	<mvc:default-servlet-handler></mvc:default-servlet-handler>
+
+	<!-- 配置视图解析器 -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView"></property>
+		<property name="prefix" value="/WEB-INF/jsp/"></property>
+		<property name="suffix" value=".jsp">
+		</property>
+	</bean>
+	<!-- 配置多媒体文件解析器 -->
+		<!-- 文件上传 -->
+		<bean id="multipartResolver"
+			class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+			<!-- 设置上传文件的最大尺寸为10MB 1024*1024*10 -->
+			<property name="maxUploadSize">
+				<value>10485760</value>
+			</property>
+		</bean>
+		
+		<!-- <mvc:interceptors>
+	按照配置的顺序执行拦截器
+		配置分页拦截器：在进入尾名为/list的网页之前拦截
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<bean class="com.ssm.test.tools.PagerInterceptor"></bean>
+		</mvc:interceptor>
+		配置登录验证拦截器：防止没登录前进入后台网页
+	 	<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<bean class="com.ssm.test.tools.LoginInterceptor"></bean>
+		</mvc:interceptor>
+		</mvc:interceptors> -->
+		
+		<!-- Spring MVC提供的简单异常处理器SimpleMappingExceptionResolver-全局异常配置 start -->     
+      <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+       <!--   默认的错误信息页面 -->
+        <property name="defaultErrorView" value="error"/>
+        <property name="exceptionMappings">
+            <props>
+                <prop key="java.lang.NullPointerException">commons/error/error_spring_null</prop>
+                <prop key="java.lang.ArithmeticException">commons/error/error_spring_math</prop>
+            </props>
+        </property>
+    </bean>   
+    
+		<!-- 配置转换器 -->
+	<!-- <mvc:annotation-driven conversion-service="myDate"/> -->
+	<!-- 注册转换器的类 -->
+	<!-- <bean id="myDate" class="org.springframework.context.support.ConversionServiceFactoryBean">
+		<property name="converters">
+			<list>
+				在这里可以注册多个类型转换类
+				<bean class="com.ssm.test.tools.ConterverTool" />
+			</list>
+		</property>
+	</bean>	 -->		
+</beans>
